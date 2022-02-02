@@ -6,10 +6,11 @@ authors = ["Ashley Felton <ashley@ropable.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-SQLAlchemy = "^1.4.31"
-bottle = "^0.12.19"
-cx-Oracle = "^8.3.0"
-python-dotenv = "^0.19.2"
+SQLAlchemy = "1.4.31"
+bottle = "0.12.19"
+cx-Oracle = "8.3.0"
+python-dotenv = "0.19.2"
+gunicorn = "20.1.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "^8.0.1"

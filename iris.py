@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from bottle import Bottle, request, response
+from datetime import date
 import json
 import os
 from sqlalchemy.engine import create_engine
@@ -18,7 +19,8 @@ application = Bottle()
 @application.route('/query')
 def query():
     response.content_type = 'application/json'
-    q = request.query.q or '5/OCT/2021'
+    # If no query value, default to today's date.
+    q = request.query.q or date.today().strftime("%d/%b/%Y").upper()
     sql = """SELECT i.name, s.stratum, p.cell_id ||'-' || to_char( p.plot_id) plotname, gm.msmt_date, gm.created_on uploaded, gm.assessor
 FROM ri_plot p
 INNER JOIN ri_gnd_msmt gm ON p.plt_id = gm.plt_id
@@ -38,4 +40,8 @@ ORDER BY i.name, plotname""".format(q)
 
 if __name__ == '__main__':
     from bottle import run
-    run(application, host='0.0.0.0', port=8818)
+    if 'PORT' in os.environ:
+        port = os.environ['PORT']
+    else:
+        port = 8818
+    run(application, host='0.0.0.0', port=port)
